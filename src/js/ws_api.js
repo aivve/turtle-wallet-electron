@@ -19,8 +19,7 @@ class WalletShellApi {
             let data = {
                 jsonrpc: '2.0',
                 method: method,
-                params: params,
-                password: this.service_password
+                params: params
             };
             let s_host = this.service_host;
             let s_port = this.service_port;
@@ -32,6 +31,8 @@ class WalletShellApi {
                 },
                 body: data,
                 json: true,
+				//username: "walletdshell",
+				//password: this.service_password,
                 timeout: timeout
             }).then((res) => {
                 if (!res) return resolve(true);

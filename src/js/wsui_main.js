@@ -218,11 +218,11 @@ function populateElementVars() {
 // crude/junk template :)
 let jtfr = {
     tFind: [
-        "WalletShell",
-        "https://github.com/turtlecoin/turtle-wallet-electron",
-        "TurtleCoin",
-        "TRTL",
-        "turtle-service",
+        "WalletdShell",
+        "https://github.com/aivve/walletd-electron-gui",
+        "Karbo",
+        "KRB",
+        "walletd",
         "CFG_MIN_FEE",
         "CFG_MIN_SEND"
     ],
@@ -2930,7 +2930,7 @@ function fetchNodeInfo(force) {
             label: h,
         };
 
-        let url = `http://${h}/feeinfo`;
+        let url = `http://${h}/feeaddress`;
         reqs.push(function (callback) {
             return fetchWait(url)
                 .then((response) => {
@@ -2941,12 +2941,12 @@ function fetchNodeInfo(force) {
                         return response.json();
                     }
                 }).then(json => {
-                    if (!json || !json.hasOwnProperty("address") || !json.hasOwnProperty("amount")) {
+                    if (!json || !json.hasOwnProperty("fee_address") || !json.hasOwnProperty("fee_amount")) {
                         return callback(null, null);
                     }
 
                     let feeAmount = "";
-                    if (json.status === "KO") {
+                    if (json.status === "OK") {
                         feeAmount = 'Fee: unknown/timeout';
                     } else {
                         feeAmount = parseInt(json.amount, 10) > 0 ? `Fee: ${wsutil.amountForMortal(json.amount)} ${config.assetTicker}` : "FREE";

@@ -16,7 +16,7 @@ config.walletFileDefaultExt = 'wallet';
 // change this to match your wallet service executable filename
 config.walletServiceBinaryFilename = 'walletd';
 
-// version on the bundled service (turtle-service)
+// version on the bundled service (walletd)
 config.walletServiceBinaryVersion = "v.1.7.3";
 
 // config file format supported by wallet service, possible values:
@@ -24,7 +24,7 @@ config.walletServiceBinaryVersion = "v.1.7.3";
 // json --> for turtle service (or its forks) version >= v0.8.4
 config.walletServiceConfigFormat = "ini";
 
-// default port number for your wallet service (e.g. turtle-service)
+// default port number for your wallet service (e.g. walletd)
 config.walletServiceRpcPort = 8070;
 
 // block explorer url, the [[TX_HASH]] will be substituted w/ actual transaction hash
@@ -38,17 +38,20 @@ config.remoteNodeDefaultHost = 'node.karbo.org';
 // for TRTL:
 // raw list: https://raw.githubusercontent.com/turtlecoin/turtlecoin-nodes-json/master/turtlecoin-nodes.json
 // filtered: https://trtl.nodes.pub/api/getNodes
-config.remoteNodeListUpdateUrl = NULL;
+config.remoteNodeListUpdateUrl = null;
 
 // set to false if using raw/unfiltered node list
 config.remoteNodeListFiltered = false;
 
 // fallback remote node list, in case fetching update failed, fill this with known to works remote nodes
 config.remoteNodeListFallback = [
+  '127.0.0.1:32348'
+];
+/*
   'node.karbo.io:32348',
   'free.rublin.org:32348',
-  'noda.pp.ua:32348',
-];
+  'noda.pp.ua:32348',*/
+
 config.remoteNodeCacheSupported = false;
 config.remoteNodeSslSupported = false;
 

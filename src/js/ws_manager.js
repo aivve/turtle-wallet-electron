@@ -46,8 +46,8 @@ var WalletShellManager = function () {
     this.serviceHost = settings.get('service_host');
     this.servicePort = settings.get('service_port');
     this.serviceTimeout = settings.get('service_timeout');
-    this.serviceArgsDefault = ['--rpc-password', settings.get('service_password')];
-    this.walletConfigDefault = { 'rpc-password': settings.get('service_password') };
+    this.serviceArgsDefault = []; // = ['--rpc-password', settings.get('service_password'), '--rpc-user', 'walletdshell' ];
+    this.walletConfigDefault = {};// = { 'rpc-password': settings.get('service_password'),  };
     this.servicePid = null;
     this.serviceLastPid = null;
     this.serviceActiveArgs = [];
@@ -236,12 +236,12 @@ WalletShellManager.prototype._spawnService = function (walletFile, password, onE
         '--container-file', walletFile,
         '--container-password', password,
         '--bind-port', this.servicePort,
-        '--enable-cors', '*',
+        //'--enable-cors', '*',
         '--daemon-address', this.daemonHost,
         '--daemon-port', this.daemonPort,
         '--log-level', SERVICE_LOG_LEVEL,
-        '--log-file', logFile,
-        '--init-timeout', timeout
+        '--log-file', logFile/*,
+        '--init-timeout', timeout*/
     ]);
     
 
@@ -297,7 +297,7 @@ WalletShellManager.prototype._spawnService = function (walletFile, password, onE
 
     this.serviceProcess.on('exit', (code, signal) => {
         serviceDown = true;
-        log.debug(`turtle service exit with code: ${code}, signal: ${signal}`);
+        log.debug(`walletd exit with code: ${code}, signal: ${signal}`);
     });
 
     if (!this.serviceStatus()) {
@@ -827,7 +827,7 @@ WalletShellManager.prototype.networkStateUpdate = function (state) {
         });
     } else {
         this.init();
-        // looks like turtle-service always stalled after disconnected, just kill & relaunch it
+        // looks like walletd always stalled after disconnected, just kill & relaunch it
         let pid = this.serviceProcess.pid || null;
         this.terminateService();
         // remove config
