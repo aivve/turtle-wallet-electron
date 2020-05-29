@@ -2,6 +2,7 @@ service.log
 node_modules/*
 tbin/*
 .vscode/*
+.idea/*
 build/*
 dist/*
 bin/*
