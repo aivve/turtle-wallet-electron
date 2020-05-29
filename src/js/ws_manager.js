@@ -312,19 +312,20 @@ WalletShellManager.prototype._spawnService = function (walletFile, password, onE
     let RETRY_MAX = (timeout > 60 ? 60 : 32);
     log.debug(`timeout: ${timeout}, max retry: ${RETRY_MAX}`);
     function testConnection(retry) {
-        wsm.serviceApi.getAddress().then((address) => {
+        wsm.serviceApi.getAddresses().then((addresses) => {
             log.debug('Got an address, connection ok!');
             if (!TEST_OK) {
                 wsm.serviceActiveArgs = cmdArgs;
                 // update session
-                wsession.set('loadedWalletAddress', address);
+                wsession.set('loadedWalletAddress', addresses[0]);
+                wsession.set('loadedWalletAddresses', addresses);
                 wsession.set('serviceReady', true);
                 wsession.set('connectedNode', settings.get('node_address'));
                 // start the worker here?
                 wsm.startSyncWorker();
                 wsm.notifyUpdate({
                     type: 'addressUpdated',
-                    data: address
+                    data: addresses[0]
                 });
 
                 // test wipe config
@@ -653,6 +654,7 @@ WalletShellManager.prototype.rescanWallet = function (scanHeight) {
 
     function resetSession() {
         wsession.set('walletUnlockedBalance', 0);
+        wsession.set('loadedWalletAddresses', []);
         wsession.set('walletLockedBalance', 0);
         wsession.set('synchronized', false);
         wsession.set('txList', []);

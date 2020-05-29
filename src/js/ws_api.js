@@ -51,16 +51,17 @@ class WalletShellApi {
             });
         });
     }
-    // only get single addres only, no multi address support for this wallet, yet
-    getAddress() {
+
+    getAddresses() {
         return new Promise((resolve, reject) => {
             this._sendRequest('getAddresses').then((result) => {
-                return resolve(result.addresses[0]);
+                return resolve(result.addresses);
             }).catch((err) => {
                 return reject(err);
             });
         });
     }
+
     getFeeInfo() {
         return new Promise((resolve, reject) => {
             this._sendRequest('getFeeInfo').then((result) => {

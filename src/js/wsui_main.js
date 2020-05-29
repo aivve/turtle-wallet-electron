@@ -51,6 +51,7 @@ let settingsInputTimeout;
 let settingsButtonSave;
 // overview page
 let overviewWalletAddress;
+let overviewWalletAddresses;
 let overviewWalletCloseButton;
 let overviewWalletRescanButton;
 let overviewPaymentIdGen;
@@ -147,6 +148,7 @@ function populateElementVars() {
 
     // overview pages
     overviewWalletAddress = document.getElementById('wallet-address');
+    overviewWalletAddresses = document.getElementById('wallet-addresses');
     overviewWalletCloseButton = document.getElementById('button-overview-closewallet');
     overviewPaymentIdGen = document.getElementById('payment-id-gen');
     overviewIntegratedAddressGen = document.getElementById('integrated-wallet-gen');
@@ -1545,9 +1547,34 @@ function handleWalletOpen() {
             return false;
         }
 
+        function getAddrRowElement(address) {
+            var row = document.createElement('li');
+            row.setAttribute('id', address);
+            var html = "";
+            html += '<div class="text-block addresses-list-entry">' + address + '<span class="badge" style="font-weight: 700;">' + '0' + '</span></div>';
+            row.innerHTML = html;
+            return row;
+        }
+
+        function renderAddresses(addresses) {
+            for (let i = 0; i < addresses.length; i++) {
+                let address = addresses[i];
+                let existingRow = document.getElementById(address);
+                if (existingRow) {
+                    // update balance, txs list etc.
+                } else if (!existingRow) {
+                    let addrElement = getAddrRowElement(address);
+                    overviewWalletAddresses.append(addrElement);
+                }
+            }
+        }
+
         function onSuccess() {
             walletOpenInputPath.value = settings.get('recentWallet');
             overviewWalletAddress.value = wsession.get('loadedWalletAddress');
+
+            let addresses = wsession.get('loadedWalletAddresses');
+            renderAddresses(addresses);
 
             wsmanager.getNodeFee();
             WALLET_OPEN_IN_PROGRESS = false;
@@ -1707,6 +1734,7 @@ function handleWalletClose() {
         // save + SIGTERMed wallet daemon
         // reset tx
         resetTransactions();
+        resetAddresses();
         wsmanager.stopService().then(() => {
             setTimeout(function () {
                 // clear form err msg
@@ -2210,6 +2238,12 @@ function resetTransactions() {
         wsutil.clearChild(grid);
     }
 
+}
+
+function resetAddresses() {
+    while (overviewWalletAddresses.firstChild) {
+        overviewWalletAddresses.firstChild.remove();
+    }
 }
 
 window.TXOPTSAPI = null;

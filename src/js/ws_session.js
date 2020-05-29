@@ -14,6 +14,7 @@ var WalletShellSession = function (opts) {
     this.eventName = 'sessionUpdated';
     this.sessDefault = {
         loadedWalletAddress: '',
+        loadedWalletAddresses: [],
         walletHash: '',
         walletUnlockedBalance: 0,
         walletLockedBalance: 0,
