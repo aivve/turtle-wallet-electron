@@ -17,7 +17,7 @@ config.walletFileDefaultExt = 'wallet';
 config.walletServiceBinaryFilename = 'walletd';
 
 // version on the bundled service (walletd)
-config.walletServiceBinaryVersion = "v.1.7.3";
+config.walletServiceBinaryVersion = "v.2.3.0";
 
 // config file format supported by wallet service, possible values:
 // ini -->  for turtle service (or its forks) version <= v0.8.3

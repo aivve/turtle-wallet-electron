@@ -29,10 +29,7 @@
 
 html{
     font-family: 'Noto Sans', sans-serif;
-    background-image: url(../assets/background.png);
-    background-position: center center;
-    background-size: 100%;
-    background-repeat: no-repeat;
+    background: #99b5ce;
 }
 
 html::before{
@@ -50,7 +47,7 @@ html::before{
 }
 
 html::after{
-    background: #15315e;
+    background: #61799f;
     content: '';
     display: block;
     height: 100%;
@@ -77,7 +74,7 @@ html, body{
 
 body {
     margin: 0;
-    color: white;
+    color: #fff;
     min-width: 800px;
     min-height: 400px;
     background-image: url(../assets/walletshell_logo.png);
@@ -98,7 +95,7 @@ body {
 
 /* Top navigation bar */
 .navbar {
-    background-color: #212721;
+    background-color: #15315e;
     display: grid;
     width: 100%;
     grid-auto-flow: column;
@@ -119,7 +116,7 @@ body {
     text-align: center;
     font-size: 0.95rem;
     text-transform: uppercase;
-    background-color: #0e1e3d;
+    background-color: #15315e;
     border: none;
     text-shadow: -1px -1px 0 #40404085;
 }
@@ -134,7 +131,7 @@ body {
 
 .navbar-button:active,
 .navbar-button.btn-active{
-    background-color: #0f2242;
+    background-color: #15315e;
 }
 
 .navbar-button .navbar-label{
@@ -193,7 +190,7 @@ body {
 .title {
     font-weight: normal;
     color: #fff;
-    font-size: 1.85rem;
+    font-size: 1rem;
     text-shadow: 0px -1px 1px #333;
     margin-top: 0;
 }
@@ -202,15 +199,15 @@ body {
 }
 /* Text */
 .text-block {
+    font-size: 12px;
     padding: 12px 10px;
     margin: 8px 0;
     display: block;
     border: 1px solid #c3c3c39c;
-    border-radius: 4px;
+    border-radius: 0px;
     box-sizing: border-box;
     color: white;
-    /* background-color: rgba(0, 0, 0, 0.18); */
-    background-color: rgba(53, 53, 53, 0.39);
+    background-color: rgba(0, 0, 0, 0.08);
 }
 
 .text-block.input-short{
@@ -415,11 +412,11 @@ select option:nth-child(odd) {
     margin: 8px 0;
     display: block;
     border: 1px solid #c3c3c39c;
-    border-radius: 4px;
+    border-radius: 0px;
     box-sizing: border-box;
     color: white;
     font-size: 1rem;
-    background-color: rgba(53, 53, 53, 0.39)
+    background-color: rgba(53, 53, 53, 0.19)
 }
 
 textarea#wallet-address{
@@ -1240,6 +1237,7 @@ span.form-help-qr.hidden{
     color: #fefefe;
     background: #00632e;
     position: absolute;
+    bottom: 0;
     width: 100%;
     z-index: 9999;
     /* anyar */
@@ -1328,7 +1326,8 @@ input.path-input-button{
 #navbar-div-sync{
   color: #fefefe;
   letter-spacing: 1px;
-  font-weight: bold;
+  font-size: small;
+  font-weight: 400;
 }
 
 #navbar-div-sync.failed{
@@ -1339,7 +1338,7 @@ input.path-input-button{
   color: #fffb00;
 }
 #navbar-div-sync.synced{
-  color: #2cffff;
+  color: #00B0FF;
 }
 
 #datoaste{
@@ -1839,7 +1838,7 @@ progress.light{
     display:block;
     position: fixed;
     right: 6px;
-    bottom: 6px;
+    bottom: 36px;
     width: 36px;
     text-align:center;
 }
