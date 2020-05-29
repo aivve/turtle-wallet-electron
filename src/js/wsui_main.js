@@ -2754,7 +2754,7 @@ function initHandlers() {
             document.getElementById('genInputPaymentId').value = payId;
             iaf.value = '';
         });
-        overviewIntegratedAddressGen.addEventListener('click', showIntegratedAddressForm);
+        //overviewIntegratedAddressGen.addEventListener('click', showIntegratedAddressForm);
         wsutil.liveEvent('#doGenIntegratedAddr', 'click', () => {
             formMessageReset();
             let genInputAddress = document.getElementById('genInputAddress');
