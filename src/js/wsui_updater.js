@@ -283,7 +283,13 @@ function updateTransactions(result) {
 
     let txListNew = [];
 
-    Array.from(blockItems).forEach((block) => {
+    if (txlistExisting > 1000) {
+        console.log(`-> updateTransactions: too many txs, stop loading them to prevent webcontent crash`);
+        txlistExisting = [];
+    }
+
+    //Array.from(blockItems).forEach((block) => {
+    Array.from(blockItems).some((block) => {
         block.transactions.map((tx) => {
             if (tx.amount !== 0 && !wsutil.objInArray(txlistExisting, tx, 'transactionHash')) {
                 tx.amount = wsutil.amountForMortal(tx.amount);
@@ -296,6 +302,11 @@ function updateTransactions(result) {
                 tx.rawPaymentId = tx.paymentId;
                 tx.rawHash = tx.transactionHash;
                 txListNew.unshift(tx);
+            }
+            if (txListNew.length > 1000) {
+                console.log(`-> updateTransactions: too many txs, stop loading them to prevent webcontent crash`);
+                //return true;
+                txListNew.pop();
             }
         });
     });
