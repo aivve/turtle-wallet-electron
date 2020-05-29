@@ -918,11 +918,11 @@ function handleAddressBook() {
         let dialog = document.getElementById('ab-dialog');
         if (dialog.hasAttribute('open')) dialog.close();
 
-        let sendTrtl = '';
+        let sendCoins = '';
         let myaddress = wsession.get('loadedWalletAddress');
         let isSynced = wsession.get('synchronized') || false;
         if (myaddress && isSynced) {
-            sendTrtl = `<button data-addressid="${data.key}" type="button" class="form-bt button-green ab-send" id="button-addressbook-panel-send">Send ${config.assetTicker}</button>`;
+            sendCoins = `<button data-addressid="${data.key}" type="button" class="form-bt button-green ab-send" id="button-addressbook-panel-send">Send ${config.assetTicker}</button>`;
         }
 
         let tpl = `
@@ -944,7 +944,7 @@ function handleAddressBook() {
                      </div>
                  </div>
                 <div class="div-panel-buttons">
-                    ${sendTrtl}
+                    ${sendCoins}
                     <button data-addressid="${data.key}" type="button" class="form-bt button-green ab-edit" id="button-addressbook-panel-edit">Edit</button>
                     <button data-addressid="${data.key}" type="button" class="form-bt button-red ab-delete" id="button-addressbook-panel-delete">Delete</button>
                 </div>
@@ -2860,11 +2860,11 @@ function fetchFromRaw() {
         setTimeout(() => initNodeSelection, 100);
         return;
     }
-    
+
     let nodeStr = atob(settings.get('pubnodes_raw', ""));
     if(!nodeStr.length) return;
     console.debug(nodeStr);
-    
+
     let tested_nodes = [];
     let nodes = JSON.parse(nodeStr);
 
@@ -2875,10 +2875,10 @@ function fetchFromRaw() {
             label: `${n.url}|${feeLabel}`
         });
     }
-    
+
     settings.set('pubnodes_tested', tested_nodes);
     initNodeSelection();
-    
+
 }
 
 function fetchNodeInfo(force) {

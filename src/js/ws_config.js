@@ -45,12 +45,8 @@ config.remoteNodeListFiltered = false;
 
 // fallback remote node list, in case fetching update failed, fill this with known to works remote nodes
 config.remoteNodeListFallback = [
-  '127.0.0.1:32348'
+  '51.15.252.228:32348'
 ];
-/*
-  'node.karbo.io:32348',
-  'free.rublin.org:32348',
-  'noda.pp.ua:32348',*/
 
 config.remoteNodeCacheSupported = false;
 config.remoteNodeSslSupported = false;
