@@ -1548,10 +1548,33 @@ function handleWalletOpen() {
         }
 
         function getAddrRowElement(address) {
-            var row = document.createElement('li');
+            let row = document.createElement('li');
             row.setAttribute('id', address);
-            var html = "";
-            html += '<div class="text-block addresses-list-entry">' + address + '<span class="badge" style="font-weight: 700;">' + '0' + '</span></div>';
+
+            let available = 0;
+            let locked = 0;
+
+            /*let params = { address: address };
+            wsapi.getBalance(params).then((balance) => {
+                available = balance.availableBalance;
+                locked = balance.lockedAmount;
+            }).catch((err) => {
+                logDebug(`-> getAddrRowElement: getBalance FAILED, ${err.message}`);
+                return row;
+            });*/
+
+
+            let html = "";
+            html += '' +
+                '<div class="addresses-list-entry">' +
+                '    <textarea title="click to copy" data-cplabel="Wallet Subaddress" tabindex="-1" data-noclear="1" class="ctcl overview-input default-textarea" readonly="readonly" rows="2">' +
+                     address +
+                '</textarea>' +
+                '  <ul class="addresses-list-entry-balance">' +
+                '     <li><i class="fas fa-unlock-alt"></i> Available: <span id="availableBalance">' + available + '</span> KRB</li>' +
+                '     <li><i class="fas fa-lock"></i> Locked: <span id="lockedBalance">' + locked +'</span> KRB</li>' +
+                '  </ul>' +
+                '</div>';
             row.innerHTML = html;
             return row;
         }

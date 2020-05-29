@@ -31,7 +31,7 @@ config.walletServiceRpcPort = 8070;
 config.blockExplorerUrl = 'http://explorer.karbowanec.com/?hash=[[TX_HASH]]#transaction';
 
 // default remote node to connect to, set this to a known reliable node for 'just works' user experience
-config.remoteNodeDefaultHost = 'node.karbo.org';
+config.remoteNodeDefaultHost = '127.0.0.1:32348';
 
 
 // remote node list update url, set to null if you don't have one
@@ -45,7 +45,8 @@ config.remoteNodeListFiltered = false;
 
 // fallback remote node list, in case fetching update failed, fill this with known to works remote nodes
 config.remoteNodeListFallback = [
-  '51.15.252.228:32348'
+  //'51.15.252.228:32348'
+  '127.0.0.1:32348'
 ];
 
 config.remoteNodeCacheSupported = false;

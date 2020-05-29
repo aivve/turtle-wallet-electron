@@ -614,7 +614,7 @@ span.form-msg.important{
     height: 89.2%;
     display:flex;
     flex-wrap: wrap;
-    margin-top: 25px;
+    margin-bottom: 25px;
 }
 
 /* Sections */
@@ -640,7 +640,7 @@ span.form-msg.important{
 }
 
 .section-contents{
-    padding: 2rem 3rem 0 3rem;
+    padding: 10px;
     height: 100%;
     max-width: 1028px;
     margin: 0 auto;
@@ -1832,6 +1832,24 @@ progress.light{
 .main-balance-overview h2{
     margin-top: 0;
     margin-bottom: 0;
+}
+
+.overview-addresses {
+    list-style: none;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.addresses-list-entry-balance {
+    list-style: none;
+    padding: 0;
+    font-size: 0.75em;
+}
+
+.addresses-list-entry-balance li {
+    display: inline;
 }
 
 .side-buttons{

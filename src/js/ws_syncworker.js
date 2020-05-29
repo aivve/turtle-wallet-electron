@@ -139,6 +139,7 @@ function checkTransactionsUpdate() {
     if (!serviceConfig || wsapi === null) return;
 
     wsapi.getBalance().then((balance) => {
+
         process.send({
             type: 'balanceUpdated',
             data: balance
