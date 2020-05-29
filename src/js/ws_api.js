@@ -23,16 +23,20 @@ class WalletShellApi {
             };
             let s_host = this.service_host;
             let s_port = this.service_port;
+
+            let username = 'walletdshell';
+            let password = this.service_password;
+            let auth = 'Basic ' + Buffer.from(username + ':' + password).toString('base64');
+
             request({
                 uri: `http://${s_host}:${s_port}/json_rpc`,
                 method: 'POST',
                 headers: {
                     Connection: 'keep-alive',
+                    Authorization: auth,
                 },
                 body: data,
                 json: true,
-				//username: "walletdshell",
-				//password: this.service_password,
                 timeout: timeout
             }).then((res) => {
                 if (!res) return resolve(true);

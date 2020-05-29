@@ -46,8 +46,8 @@ var WalletShellManager = function () {
     this.serviceHost = settings.get('service_host');
     this.servicePort = settings.get('service_port');
     this.serviceTimeout = settings.get('service_timeout');
-    this.serviceArgsDefault = []; // = ['--rpc-password', settings.get('service_password'), '--rpc-user', 'walletdshell' ];
-    this.walletConfigDefault = {};// = { 'rpc-password': settings.get('service_password'),  };
+    this.serviceArgsDefault = ['--rpc-password', settings.get('service_password'), '--rpc-user', 'walletdshell' ];
+    this.walletConfigDefault = { 'rpc-password': settings.get('service_password'), 'rpc-user': 'walletdshell' };
     this.servicePid = null;
     this.serviceLastPid = null;
     this.serviceActiveArgs = [];
@@ -104,7 +104,7 @@ WalletShellManager.prototype._serviceBinExists = function () {
     wsutil.isFileExist(this.serviceBin);
 };
 
-// check 
+// check
 WalletShellManager.prototype.serviceStatus = function () {
     return (undefined !== this.serviceProcess && null !== this.serviceProcess);
 };
@@ -243,7 +243,7 @@ WalletShellManager.prototype._spawnService = function (walletFile, password, onE
         '--log-file', logFile/*,
         '--init-timeout', timeout*/
     ]);
-    
+
 
     // fallback for network resume handler
     let cmdArgs = serviceArgs;
@@ -728,7 +728,7 @@ WalletShellManager.prototype._fusionSendTx = function (threshold, counter) {
         if (counter >= maxIter) return resolve(wsm.fusionTxHash); // stop at max iter
 
         wtime(2400).then(() => {
-            // keep sending fusion tx till it hit IOOR or reaching max iter 
+            // keep sending fusion tx till it hit IOOR or reaching max iter
             log.debug(`send fusion tx, iteration: ${counter}`);
             wsm.serviceApi.sendFusionTransaction({ threshold: threshold }).then((resp) => {
                 wsm.fusionTxHash.push(resp.transactionHash);
