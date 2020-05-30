@@ -108,6 +108,19 @@ body {
     padding:12px 0 0 12px;
 }
 
+.navbar-div-balance {
+    padding:12px 5px 5px 12px;
+    font-weight: 300;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    text-shadow: -1px -1px 0 #40404085;
+}
+
+.navbar-text-balance {
+    padding: 0 5px 5px 0;
+    font-weight: 500;
+}
+
 .navbar-button {
     height: 45px;
     padding: 0 14px;
@@ -640,7 +653,7 @@ span.form-msg.important{
 }
 
 .section-contents{
-    padding: 10px;
+    padding: 10px 40px;
     height: 100%;
     max-width: 1028px;
     margin: 0 auto;
@@ -1145,6 +1158,16 @@ dialog[open]{
 .default-dialog{
     width: 500px;
     max-width: 80%;
+    background: #083457;
+    color: #fff;
+    border: 2px solid #fff;
+    padding: 0 1rem;
+    border-radius:4px;
+}
+
+.qrcode-dialog{
+    width: 240px;
+    height: 240px;
     background: #083457;
     color: #fff;
     border: 2px solid #fff;
@@ -1825,6 +1848,8 @@ progress.light{
 }
 .div-main-address-qr{
     text-align:right;
+    float: right;
+    margin-left: 10px;
 }
 .div-main-address-qr img{
     border-radius:6px;
@@ -1837,7 +1862,7 @@ progress.light{
 .overview-addresses {
     list-style: none;
     padding: 0;
-    max-height: 200px;
+    max-height: 300px;
     overflow-y: scroll;
     overflow-x: hidden;
 }

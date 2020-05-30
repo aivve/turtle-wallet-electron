@@ -7,48 +7,20 @@
                     <textarea title="click to copy" data-cplabel="Wallet Address" tabindex="-1" data-noclear="1" class="ctcl overview-input default-textarea" id="wallet-address" readonly="readonly" rows="2"></textarea>
                     <span id="form-help-wallet-address" class="form-help"></span>
                     <!--a id="integrated-wallet-gen" class="wallet-tool form-help align-right">Generate Integrated Address</a-->
-                    <a id="payment-id-gen" class="wallet-tool form-help align-right">Generate Payment ID</a>
-                </div>
-            </div>
-
-            <div class="main-balance-overview">
-                <div class="div-overview-balance">
-                    <h2 class="title">Total balance:</h2>
-                    <h4 class="text-block" id="balance-available" title="Available Balance">
-                        <i class="fas fa-unlock-alt"></i>
-                        Available:
-                        <span style="float: right;">
-                            <span data-cplabel="Balance" class="tctcl">0.00</span>
-                            KRB
-                        </span>
-                    </h4>
-                    <h4 class="text-block" id="balance-locked" title="Unconfirmed/Locked Balance">
-                        <i class="fas fa-lock"></i>
-                        Locked:
-                        <span style="float: right;">
-                            <span data-cplabel="Locked balance" class="tctcl">0.00</span>
-                            KRB
-                        </span>
-                    </h4>
-                </div>
-
-                <div class="div-main-address-qr" id="div-w-qr">
-                    <span class="form-help form-help-qr hidden" id="scan-qr-help">Scan to share your address</span>
                 </div>
             </div>
 
             <div class="div-overview-addresses">
                 <div class="input-wrap" style="margin-top:0">
-                    <h2 class="title">Addresses:</h2>
-
-                    <ul class="overview-addresses" id="wallet-addresses">
-
-                    </ul>
-
+                    <h2 class="title" style="margin-bottom: 0;">Sub-addresses:</h2>
+                    <ul class="overview-addresses" id="wallet-addresses"></ul>
                 </div>
             </div>
 
             <div class="input-wrap button-wrap">
+
+                <a id="payment-id-gen" class="wallet-tool form-help align-right">Generate Payment ID</a>
+
                 <button tabindex="0" type="button" class="form-bt button-green"
                     data-section="section-overview-show"
                     title="Backup your private keys, YOU REALLY HAVE TO DO THIS! (ctrl+e)"
