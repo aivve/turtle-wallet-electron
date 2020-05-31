@@ -1382,7 +1382,7 @@ function getAddrRowElement(address) {
 
     html +=
         '<div class="addresses-list-entry">' +
-        '    <textarea title="click to copy" data-cplabel="Wallet Subaddress" tabindex="-1" data-noclear="1" class="ctcl overview-input default-textarea" readonly="readonly" rows="2">' +
+        '    <textarea title="click to copy" data-cplabel="Wallet Subaddress" tabindex="-1" data-noclear="1" class="ctcl overview-input default-textarea" readonly="readonly" rows="1">' +
         address +
         '</textarea>' +
         '  <ul class="addresses-list-entry-balance">' +
