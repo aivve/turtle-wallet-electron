@@ -122,6 +122,11 @@ let dmswitch;
 let kswitch;
 let iswitch;
 
+function logDebug(msg) {
+    if (!DEBUG) return;
+    log.debug(`[ui_main] ${msg}`);
+}
+
 function populateElementVars() {
     // misc
     thtml = document.documentElement;
@@ -1367,6 +1372,57 @@ function handleAddressBook() {
     }, 2000);
 }
 
+function getAddrRowElement(address) {
+    let row = document.createElement('li');
+    row.setAttribute('id', address);
+
+    let available = 0;
+    let locked = 0;
+    let html = "";
+
+    html +=
+        '<div class="addresses-list-entry">' +
+        '    <textarea title="click to copy" data-cplabel="Wallet Subaddress" tabindex="-1" data-noclear="1" class="ctcl overview-input default-textarea" readonly="readonly" rows="2">' +
+        address +
+        '</textarea>' +
+        '  <ul class="addresses-list-entry-balance">' +
+        '     <li><i class="fas fa-unlock-alt"></i> <span id="available_' + address + '">' +  wsutil.amountForMortal(available) + '</span> KRB</li>' +
+        '     <li><i class="fas fa-lock"></i> <span id="locked_' + address + '">' +  wsutil.amountForMortal(locked) +'</span> KRB</li>' +
+        '  </ul>';
+    html += '</div>';
+
+    let params = { address: address };
+    wsmanager.serviceApi.getBalance(params).then((balance) => {
+        available = balance.availableBalance;
+        locked = balance.lockedAmount;
+
+        let availableBalance = document.getElementById("available_" + address);
+        let lockedBalance = document.getElementById("locked_" + address);
+
+        availableBalance.innerHTML = wsutil.amountForMortal(available);
+        lockedBalance.innerHTML = wsutil.amountForMortal(locked);
+    }).catch((err) => {
+        logDebug(`-> getAddrRowElement: getBalance FAILED, ${err.message}`);
+        return row;
+    });
+
+    row.innerHTML = html;
+    return row;
+}
+
+function renderAddresses(addresses) {
+    for (let i = 0; i < addresses.length; i++) {
+        let address = addresses[i];
+        let existingRow = document.getElementById(address);
+        if (existingRow) {
+            // update balance, txs list etc.
+        } else if (!existingRow) {
+            let addrElement = getAddrRowElement(address);
+            overviewWalletAddresses.append(addrElement);
+        }
+    }
+}
+
 function handleWalletOpen() {
     if (settings.has('recentWallet')) {
         walletOpenInputPath.value = settings.get('recentWallet');
@@ -1545,51 +1601,6 @@ function handleWalletOpen() {
             WALLET_OPEN_IN_PROGRESS = false;
             setOpenButtonsState(0);
             return false;
-        }
-
-        function getAddrRowElement(address) {
-            let row = document.createElement('li');
-            row.setAttribute('id', address);
-
-            let available = 0;
-            let locked = 0;
-
-            /*let params = { address: address };
-            wsapi.getBalance(params).then((balance) => {
-                available = balance.availableBalance;
-                locked = balance.lockedAmount;
-            }).catch((err) => {
-                logDebug(`-> getAddrRowElement: getBalance FAILED, ${err.message}`);
-                return row;
-            });*/
-
-
-            let html = "";
-            html += '' +
-                '<div class="addresses-list-entry">' +
-                '    <textarea title="click to copy" data-cplabel="Wallet Subaddress" tabindex="-1" data-noclear="1" class="ctcl overview-input default-textarea" readonly="readonly" rows="2">' +
-                     address +
-                '</textarea>' +
-                '  <ul class="addresses-list-entry-balance">' +
-                '     <li><i class="fas fa-unlock-alt"></i> Available: <span id="availableBalance">' + available + '</span> KRB</li>' +
-                '     <li><i class="fas fa-lock"></i> Locked: <span id="lockedBalance">' + locked +'</span> KRB</li>' +
-                '  </ul>' +
-                '</div>';
-            row.innerHTML = html;
-            return row;
-        }
-
-        function renderAddresses(addresses) {
-            for (let i = 0; i < addresses.length; i++) {
-                let address = addresses[i];
-                let existingRow = document.getElementById(address);
-                if (existingRow) {
-                    // update balance, txs list etc.
-                } else if (!existingRow) {
-                    let addrElement = getAddrRowElement(address);
-                    overviewWalletAddresses.append(addrElement);
-                }
-            }
         }
 
         function onSuccess() {
