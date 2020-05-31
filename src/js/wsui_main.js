@@ -1427,28 +1427,10 @@ function renderAddresses(addresses) {
             let addressShowKeyButton = document.getElementById("export_key_" + address);
 
             addressShowKeyButton.addEventListener('click', () => {
-                console.log("Export keys clicked for address " + address);
-
                 setTimeout(() => {
                     showkeyCurrentAddress = address;
                     showkeyInputAddress.value = address;
                 }, 20);
-
-                /*formMessageReset();
-                wsmanager.getSecretKeys(address).then((keys) => {
-                    showkeyInputAddress.value = address;
-                    showkeyInputViewKey.value = keys.viewSecretKey;
-                    showkeyInputSpendKey.value = keys.spendSecretKey;
-                    if (keys.mnemonicSeed && keys.mnemonicSeed.length > 1) {
-                        showkeyInputSeed.value = keys.mnemonicSeed;
-                        showkeyInputSeed.classList.add('ctcl');
-                    } else {
-                        showkeyInputSeed.value = `- Mnemonic seed is not available for this wallet -${os.EOL}You still can restore your wallet using private keys shown above.`;
-                        showkeyInputSeed.classList.remove('ctcl');
-                    }
-                }).catch(() => {
-                    formMessageSet('secret', 'error', "Failed to get key, please try again in a few seconds");
-                });*/
             });
 
             addressShowKeyButton.addEventListener('click', changeSection.bind(this, "section-overview-show"), false);
@@ -2065,7 +2047,7 @@ function handleWalletExport() {
                 showkeyCurrentAddress = overviewWalletAddress.value;
             }
             wsmanager.getSecretKeys(showkeyCurrentAddress).then((keys) => {
-                let textContent = `Wallet Address:${os.EOL}${wsession.get('loadedWalletAddress')}${os.EOL}`;
+                let textContent = `Wallet Address:${os.EOL}${showkeyCurrentAddress}${os.EOL}`;
                 textContent += `${os.EOL}View Secret Key:${os.EOL}${keys.viewSecretKey}${os.EOL}`;
                 textContent += `${os.EOL}Spend Secret Key:${os.EOL}${keys.spendSecretKey}${os.EOL}`;
                 if (keys.mnemonicSeed && keys.mnemonicSeed.length > 1) {
