@@ -204,7 +204,7 @@ body {
     font-weight: normal;
     color: #fff;
     font-size: 1rem;
-    text-shadow: 0px -1px 1px #333;
+/*    text-shadow: 0px -1px 1px #333;*/
     margin-top: 0;
 }
 #section-addressbook h2.title{
@@ -429,7 +429,8 @@ select option:nth-child(odd) {
     box-sizing: border-box;
     color: white;
     font-size: 1rem;
-    background-color: rgba(53, 53, 53, 0.19)
+    /*background-color: rgba(53, 53, 53, 0.19)*/
+    background-color: rgba(53, 53, 53, 0.05)
 }
 
 textarea#wallet-address{

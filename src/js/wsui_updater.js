@@ -278,6 +278,14 @@ function updateBalance(data) {
     }
 }
 
+function updateAddressBalance(data) {
+    let availableBalance = document.getElementById("available_" + data.address);
+    let lockedBalance = document.getElementById("locked_" + data.address);
+
+    availableBalance.innerHTML = wsutil.amountForMortal(data.available);
+    lockedBalance.innerHTML = wsutil.amountForMortal(data.locked);
+}
+
 function updateTransactions(result) {
     let txlistExisting = wsession.get('txList');
     const blockItems = result.items;
@@ -473,6 +481,9 @@ function updateUiState(msg) {
             break;
         case 'balanceUpdated':
             updateBalance(msg.data);
+            break;
+        case 'addressBalanceUpdated':
+            updateAddressBalance(msg.data);
             break;
         case 'transactionUpdated':
             updateTransactions(msg.data);

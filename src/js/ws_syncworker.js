@@ -183,6 +183,37 @@ function checkTransactionsUpdate() {
         logDebug(`-> txUpdater: getBalance FAILED, ${err.message}`);
         return false;
     });
+
+    // update individual balances of subaddresses
+    wsapi.getAddresses().then((addresses) => {
+        for (let i = 0; i < addresses.length; i++) {
+            let address = addresses[i];
+            logDebug(`-> addrBalanceUpdater: update balance for address ${address}`);
+            let params = { address: address };
+            wsapi.getBalance(params).then((balance) => {
+                let available = balance.availableBalance;
+                let locked = balance.lockedAmount;
+
+                let balanceData = {
+                    address: address,
+                    available: available,
+                    locked: locked
+                };
+
+                process.send({
+                    type: 'addressBalanceUpdated',
+                    data: balanceData
+                });
+
+            }).catch((err) => {
+                logDebug(`-> addrBalanceUpdater: getBalance FAILED, ${err.message}`);
+            });
+        }
+
+    }).catch((err) => {
+        logDebug(`-> addrBalanceUpdater: getAddresses FAILED, ${err.message}`);
+        return false;
+    });
 }
 
 function saveWallet() {
