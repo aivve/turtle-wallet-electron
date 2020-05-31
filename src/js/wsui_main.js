@@ -52,6 +52,7 @@ let settingsButtonSave;
 // overview page
 let overviewWalletAddress;
 let overviewWalletAddresses;
+let overviewWalletNewAddress;
 let overviewWalletCloseButton;
 let overviewWalletRescanButton;
 let overviewPaymentIdGen;
@@ -150,8 +151,9 @@ function populateElementVars() {
     settingsButtonSave = document.getElementById('button-settings-save');
 
     // overview pages
-    overviewWalletAddress = document.getElementById('wallet-address');
+    //overviewWalletAddress = document.getElementById('wallet-address');
     overviewWalletAddresses = document.getElementById('wallet-addresses');
+    overviewWalletNewAddress = document.getElementById('generate-new-address');
     overviewWalletCloseButton = document.getElementById('button-overview-closewallet');
     overviewPaymentIdGen = document.getElementById('payment-id-gen');
     overviewIntegratedAddressGen = document.getElementById('integrated-wallet-gen');
@@ -176,7 +178,7 @@ function populateElementVars() {
     walletOpenAddCustomNode = document.getElementById('addCustomNode');
     walletOpenRefreshNodes = document.getElementById('updateNodeList');
     // show/export keys page
-    overviewShowKeysButton = document.getElementById('button-overview-showkeys');
+    //overviewShowKeysButton = document.getElementById('button-overview-showkeys');
     overviewShowKeyButton = document.getElementById('button-show-reveal');
     showkeyButtonExportKey = document.getElementById('button-show-export');
     showkeyInputAddress = document.getElementById('address-for-keys');
@@ -1620,7 +1622,7 @@ function handleWalletOpen() {
 
         function onSuccess() {
             walletOpenInputPath.value = settings.get('recentWallet');
-            overviewWalletAddress.value = wsession.get('loadedWalletAddress');
+            //overviewWalletAddress.value = wsession.get('loadedWalletAddress');
 
             showkeyCurrentAddress = wsession.get('loadedWalletAddress');
 
@@ -2007,17 +2009,44 @@ function handleWalletImportSeed() {
     });
 }
 
-function handleWalletExport() {
-    overviewShowKeysButton.addEventListener('click', () => {
-        showkeyInputAddress.value = showkeyCurrentAddress;
+function handleNewAddress() {
+    overviewWalletNewAddress.addEventListener('click', () => {
+        console.log("handleNewAddress: New address clicked...");
+/*
+        ret = ret || false;
+
+        let payId = require('crypto').randomBytes(32).toString('hex');
+        if (ret) return payId.toUpperCase();
+
+        let dialogTpl = `<div class="transaction-panel">
+                <h4>Generated Payment ID:</h4>
+                <textarea data-cplabel="Payment ID" title="click to copy" class="ctcl default-textarea" rows="1" readonly="readonly">${payId.toUpperCase()}</textarea>
+                <span title="Close this dialog (esc)" class="dialog-close dialog-close-default" data-target="#ab-dialog"><i class="fas fa-window-close"></i></span>
+            </div>`;
+        let dialog = document.getElementById('ab-dialog');
+        if (dialog.hasAttribute('open')) dialog.close();
+        dialog.innerHTML = dialogTpl;
+        dialog.showModal();
+         */
+
     });
+}
+
+function handleDeleteAddress() {
+
+}
+
+function handleWalletExport() {
+    //overviewShowKeysButton.addEventListener('click', () => {
+    //    showkeyInputAddress.value = showkeyCurrentAddress;
+    //});
 
     overviewShowKeyButton.addEventListener('click', () => {
         formMessageReset();
-        if (!overviewWalletAddress.value && showkeyCurrentAddress.length === 0) return;
-        if (showkeyCurrentAddress.length === 0) {
-            showkeyCurrentAddress = overviewWalletAddress.value;
-        }
+        if (/*!overviewWalletAddress.value && */showkeyCurrentAddress.length === 0) return;
+        //if (showkeyCurrentAddress.length === 0) {
+        //    showkeyCurrentAddress = overviewWalletAddress.value;
+        //}
         wsmanager.getSecretKeys(showkeyCurrentAddress).then((keys) => {
             showkeyInputViewKey.value = keys.viewSecretKey;
             showkeyInputSpendKey.value = keys.spendSecretKey;
@@ -2042,10 +2071,10 @@ function handleWalletExport() {
             ]
         });
         if (filename) {
-            if (!overviewWalletAddress.value && showkeyCurrentAddress.length === 0) return;
-            if (showkeyCurrentAddress.length === 0) {
-                showkeyCurrentAddress = overviewWalletAddress.value;
-            }
+            if (/*!overviewWalletAddress.value && */showkeyCurrentAddress.length === 0) return;
+            //if (showkeyCurrentAddress.length === 0) {
+            //    showkeyCurrentAddress = overviewWalletAddress.value;
+            //}
             wsmanager.getSecretKeys(showkeyCurrentAddress).then((keys) => {
                 let textContent = `Wallet Address:${os.EOL}${showkeyCurrentAddress}${os.EOL}`;
                 textContent += `${os.EOL}View Secret Key:${os.EOL}${keys.viewSecretKey}${os.EOL}`;
@@ -2713,11 +2742,15 @@ function initHandlers() {
         handleWalletRescan();
         // export keys/seed
         handleWalletExport();
+        // new address
+        handleNewAddress();
+        // delete address
+        handleDeleteAddress();
         // send transfer
         handleSendTransfer();
         // transactions
         handleTransactions();
-        // netstatus
+        // net status
         handleNetworkChange();
         //external link handler
         wsutil.liveEvent('a.external', 'click', (event) => {
@@ -2875,11 +2908,11 @@ function initKeyBindings() {
         overviewWalletCloseButton.dispatchEvent(new Event('click'));
     });
     // display/export private keys: ctrl+e
-    Mousetrap.bind(['ctrl+e', 'command+e'], () => {
-        walletOpened = wsession.get('serviceReady') || false;
-        if (!walletOpened) return;
-        return changeSection('section-overview-show');
-    });
+    //Mousetrap.bind(['ctrl+e', 'command+e'], () => {
+    //    walletOpened = wsession.get('serviceReady') || false;
+    //    if (!walletOpened) return;
+    //    return changeSection('section-overview-show');
+    //});
     // create new wallet: ctrl+n
     Mousetrap.bind(['ctrl+n', 'command+n'], () => {
         walletOpened = wsession.get('serviceReady') || false;

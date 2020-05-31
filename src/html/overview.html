@@ -1,18 +1,17 @@
 <template>
     <section class="section" id="section-overview">
         <div class="section-contents">
-            <div class="div-overview-address">
+            <!--div class="div-overview-address">
                 <div class="input-wrap" style="margin-top:0">
                     <h2 class="title">Primary address:</h2>
                     <textarea title="click to copy" data-cplabel="Wallet Address" tabindex="-1" data-noclear="1" class="ctcl overview-input default-textarea" id="wallet-address" readonly="readonly" rows="2"></textarea>
                     <span id="form-help-wallet-address" class="form-help"></span>
-                    <!--a id="integrated-wallet-gen" class="wallet-tool form-help align-right">Generate Integrated Address</a-->
                 </div>
-            </div>
+            </div-->
 
             <div class="div-overview-addresses">
                 <div class="input-wrap" style="margin-top:0">
-                    <h2 class="title" style="margin-bottom: 0;">Sub-addresses:</h2>
+                    <h2 class="title" style="margin-bottom: 0;">Addresses:</h2>
                     <ul class="overview-addresses" id="wallet-addresses"></ul>
                 </div>
             </div>
@@ -22,10 +21,13 @@
                 <button tabindex="0" type="button" class="form-bt button-green"
                     title="Generate Payment ID"
                     id="payment-id-gen">Generate Payment ID</button>
-                <button tabindex="0" type="button" class="form-bt button-green"
+                <!--button tabindex="0" type="button" class="form-bt button-green"
                     data-section="section-overview-show"
                     title="Backup your private keys, YOU REALLY HAVE TO DO THIS! (ctrl+e)"
-                    id="button-overview-showkeys">Backup Keys (primary)</button>
+                    id="button-overview-showkeys">Backup Keys (primary)</button-->
+                <button tabindex="0" type="button" class="form-bt button-green"
+                        title="Generate new address"
+                        id="generate-new-address">New address</button>
                 <button tabindex="0" type="button" class="form-bt button-green"
                     title="Rescan transactions from specific block height. Only do this if you know what you are doing"
                     id="button-overview-rescan">Rescan</button>
