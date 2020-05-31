@@ -2,19 +2,25 @@
     <section class="section" id="section-overview-show">
         <div class="section-contents darkened">
             <div class="div-title">
-                <h2 class="title">Private Keys &amp; Mnemonic Seed</h2>
+                <h2 class="title">Private Keys &amp; Mnemonic Seed for address:</h2>
             </div>
             <div class="div-input">
+
+                <div class="input-wrap">
+                    <input data-cplabel="Address" type="text" class="text-block ctcl" id="address-for-keys" readonly="readonly" />
+                </div>
+
                 <div class="input-wrap">
                     <span class="form-msg text-spaced-info important">
-                        Important!!!<br>
-                        Please make a backup of these keys, store it somewere safe &amp; secret.<br>
+                        Important!!!
+                        Please make a backup of these keys, store it somewhere safe &amp; secret. 
                         In case your wallet file got corrupted or loss, you can always import these keys to restore it in any compatible
                         wallet program.
                     </span>
                 </div>
+
                 <div class="input-wrap">
-                    <h4 class="text-spaced">Your private view key:</h4>        
+                    <h4 class="text-spaced">Your private view key:</h4>
                     <input data-cplabel="View key" placeholder="Click the Reveal button to see it" type="text" class="text-block ctcl" id="key-show-view" readonly="readonly" />
                 </div>
 

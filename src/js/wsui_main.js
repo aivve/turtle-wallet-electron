@@ -78,7 +78,10 @@ let walletOpenSelectOpts;
 let walletOpenAddCustomNode;
 let walletOpenRefreshNodes;
 // show/export keys page
+let overviewShowKeysButton;
 let showkeyButtonExportKey;
+let showkeyInputAddress;
+let showkeyCurrentAddress;
 let showkeyInputViewKey;
 let showkeyInputSpendKey;
 let showkeyInputSeed;
@@ -121,11 +124,6 @@ let thtml;
 let dmswitch;
 let kswitch;
 let iswitch;
-
-function logDebug(msg) {
-    if (!DEBUG) return;
-    log.debug(`[ui_main] ${msg}`);
-}
 
 function populateElementVars() {
     // misc
@@ -178,8 +176,10 @@ function populateElementVars() {
     walletOpenAddCustomNode = document.getElementById('addCustomNode');
     walletOpenRefreshNodes = document.getElementById('updateNodeList');
     // show/export keys page
+    overviewShowKeysButton = document.getElementById('button-overview-showkeys');
     overviewShowKeyButton = document.getElementById('button-show-reveal');
     showkeyButtonExportKey = document.getElementById('button-show-export');
+    showkeyInputAddress = document.getElementById('address-for-keys');
     showkeyInputViewKey = document.getElementById('key-show-view');
     showkeyInputSpendKey = document.getElementById('key-show-spend');
     showkeyInputSeed = document.getElementById('seed-show');
@@ -1388,9 +1388,11 @@ function getAddrRowElement(address) {
         '  <ul class="addresses-list-entry-balance">' +
         '     <li><i class="fas fa-unlock-alt"></i> <span id="available_' + address + '">' +  wsutil.amountForMortal(available) + '</span> KRB</li>' +
         '     <li><i class="fas fa-lock"></i> <span id="locked_' + address + '">' +  wsutil.amountForMortal(locked) +'</span> KRB</li>' +
-        '  </ul>';
-    html += '</div>';
+        '     <li><a class="wallet-tool form-help align-right" style="margin: 0 20px 0 0; padding: 0;" id="export_key_' + address + '"><i class="fas fa-key"></i> Backup keys</a></li>' +
+        '  </ul>' +
+        '</div>';
 
+    // for balances
     let params = { address: address };
     wsmanager.serviceApi.getBalance(params).then((balance) => {
         available = balance.availableBalance;
@@ -1402,11 +1404,12 @@ function getAddrRowElement(address) {
         availableBalance.innerHTML = wsutil.amountForMortal(available);
         lockedBalance.innerHTML = wsutil.amountForMortal(locked);
     }).catch((err) => {
-        logDebug(`-> getAddrRowElement: getBalance FAILED, ${err.message}`);
+        console.log(`-> getAddrRowElement: getBalance FAILED, ${err.message}`);
         return row;
     });
 
     row.innerHTML = html;
+
     return row;
 }
 
@@ -1419,6 +1422,36 @@ function renderAddresses(addresses) {
         } else if (!existingRow) {
             let addrElement = getAddrRowElement(address);
             overviewWalletAddresses.append(addrElement);
+
+            // for keys export
+            let addressShowKeyButton = document.getElementById("export_key_" + address);
+
+            addressShowKeyButton.addEventListener('click', () => {
+                console.log("Export keys clicked for address " + address);
+
+                setTimeout(() => {
+                    showkeyCurrentAddress = address;
+                    showkeyInputAddress.value = address;
+                }, 20);
+
+                /*formMessageReset();
+                wsmanager.getSecretKeys(address).then((keys) => {
+                    showkeyInputAddress.value = address;
+                    showkeyInputViewKey.value = keys.viewSecretKey;
+                    showkeyInputSpendKey.value = keys.spendSecretKey;
+                    if (keys.mnemonicSeed && keys.mnemonicSeed.length > 1) {
+                        showkeyInputSeed.value = keys.mnemonicSeed;
+                        showkeyInputSeed.classList.add('ctcl');
+                    } else {
+                        showkeyInputSeed.value = `- Mnemonic seed is not available for this wallet -${os.EOL}You still can restore your wallet using private keys shown above.`;
+                        showkeyInputSeed.classList.remove('ctcl');
+                    }
+                }).catch(() => {
+                    formMessageSet('secret', 'error', "Failed to get key, please try again in a few seconds");
+                });*/
+            });
+
+            addressShowKeyButton.addEventListener('click', changeSection.bind(this, "section-overview-show"), false);
         }
     }
 }
@@ -1606,6 +1639,8 @@ function handleWalletOpen() {
         function onSuccess() {
             walletOpenInputPath.value = settings.get('recentWallet');
             overviewWalletAddress.value = wsession.get('loadedWalletAddress');
+
+            showkeyCurrentAddress = wsession.get('loadedWalletAddress');
 
             let addresses = wsession.get('loadedWalletAddresses');
             renderAddresses(addresses);
@@ -1991,10 +2026,17 @@ function handleWalletImportSeed() {
 }
 
 function handleWalletExport() {
+    overviewShowKeysButton.addEventListener('click', () => {
+        showkeyInputAddress.value = showkeyCurrentAddress;
+    });
+
     overviewShowKeyButton.addEventListener('click', () => {
         formMessageReset();
-        if (!overviewWalletAddress.value) return;
-        wsmanager.getSecretKeys(overviewWalletAddress.value).then((keys) => {
+        if (!overviewWalletAddress.value && showkeyCurrentAddress.length === 0) return;
+        if (showkeyCurrentAddress.length === 0) {
+            showkeyCurrentAddress = overviewWalletAddress.value;
+        }
+        wsmanager.getSecretKeys(showkeyCurrentAddress).then((keys) => {
             showkeyInputViewKey.value = keys.viewSecretKey;
             showkeyInputSpendKey.value = keys.spendSecretKey;
             if (keys.mnemonicSeed && keys.mnemonicSeed.length > 1) {
@@ -2018,7 +2060,11 @@ function handleWalletExport() {
             ]
         });
         if (filename) {
-            wsmanager.getSecretKeys(overviewWalletAddress.value).then((keys) => {
+            if (!overviewWalletAddress.value && showkeyCurrentAddress.length === 0) return;
+            if (showkeyCurrentAddress.length === 0) {
+                showkeyCurrentAddress = overviewWalletAddress.value;
+            }
+            wsmanager.getSecretKeys(showkeyCurrentAddress).then((keys) => {
                 let textContent = `Wallet Address:${os.EOL}${wsession.get('loadedWalletAddress')}${os.EOL}`;
                 textContent += `${os.EOL}View Secret Key:${os.EOL}${keys.viewSecretKey}${os.EOL}`;
                 textContent += `${os.EOL}Spend Secret Key:${os.EOL}${keys.spendSecretKey}${os.EOL}`;
