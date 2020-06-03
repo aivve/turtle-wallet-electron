@@ -27,9 +27,13 @@
     color:rgba(234, 234, 234, 0.35);
 }
 
-html{
-    font-family: 'Noto Sans', sans-serif;
+html {
+    font-family: 'Source Code Pro', monospace;
     background: #99b5ce;
+}
+
+input, textarea, select, button {
+	font-family: 'Source Code Pro', monospace;
 }
 
 html::before{
@@ -428,7 +432,7 @@ select option:nth-child(odd) {
     border-radius: 0px;
     box-sizing: border-box;
     color: white;
-    font-size: 1rem;
+    font-size: 0.87rem;
     /*background-color: rgba(53, 53, 53, 0.19)*/
     background-color: rgba(53, 53, 53, 0.05)
 }
@@ -539,19 +543,21 @@ span.form-msg.important{
 .button-green,
 .button-gray,
 .button-red{
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    font-size: 1em;
+    border: 0 none;
+    border-radius: 0;
+    font-size: 0.75em;
     text-shadow: 1px 1px 1px rgba(255,255,255, .2);
     text-transform: uppercase;
-/*     transition: all 0.15s ease; */
+    transition: all 0.15s ease;
     color: #f3f3f3;
-    padding: 0.5rem 0.75rem 0.3rem 0.75rem;
+    padding: 0.5rem 0.75rem 0.5rem 0.75rem;
     margin-right: 0.25rem;
-    /* box-shadow: 2px 2px 2px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5); */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
-
+.card-1:hover {
+  
+}
 
 .button-green:hover,
 .button-gray:hover,
@@ -562,11 +568,11 @@ span.form-msg.important{
 .button-green:focus,
 .button-gray:focus,
 .button-red:focus{
-    box-shadow: 4px 4px 4px rgba(0,0,0,.29), inset 0px 0px 4px rgba(0,0,0, .5);
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
     color: #fff;
     outline: none;
     text-shadow: 1px 1px 1px #333;
-    border: 2px solid #fff;
+    border: 0 none;
 }
 
 .button-green{
@@ -2000,7 +2006,7 @@ ul.cnodes li a:hover{
 }
 
 kbd{
-    font-family: monospace;
+    font-family: 'Source Code Pro', monospace;
     display:inline-block;
     background: #fff;
     color: #504e4e;
@@ -2026,7 +2032,7 @@ kbd{
 
 .license-text{
     text-align: left;
-    font-family: monospace;
+    font-family: 'Source Code Pro', monospace;
     height: 110px;
     overflow-x: hidden;
     overflow-y: auto;
