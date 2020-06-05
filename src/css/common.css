@@ -1270,10 +1270,8 @@ span.form-help-qr.hidden{
     bottom: 0;
     width: 100%;
     z-index: 9999;
-    /* anyar */
     opacity: 1.0;
     transition: opacity .9s, background .9s;
-    height: 30px;
 }
 
 .status-node-info.conn-warning{
@@ -1869,7 +1867,7 @@ progress.light{
 .overview-addresses {
     list-style: none;
     padding: 0;
-    max-height: 300px;
+    max-height: 400px;
     overflow-y: scroll;
     overflow-x: hidden;
 }

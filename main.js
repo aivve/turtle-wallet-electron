@@ -42,7 +42,7 @@ const DEFAULT_SETTINGS = {
     darkmode: true,
     service_config_format: config.walletServiceConfigFormat
 };
-const DEFAULT_SIZE = { width: 1040, height: 680 };
+const DEFAULT_SIZE = { width: 940, height: 680 };
 const WIN_TITLE = `${config.appName} ${WALLETSHELL_VERSION} - ${config.appDescription}`;
 
 app.prompExit = true;

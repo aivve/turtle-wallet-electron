@@ -494,6 +494,9 @@ function updateUiState(msg) {
         case 'addressUpdated':
             updateQr(msg.data);
             break;
+        //case 'addressesUpdated':
+        //    updateAddresses(msg.data);
+        //    break;
         case 'sectionChanged':
             if (msg.data) resetFormState(msg.data);
             break;

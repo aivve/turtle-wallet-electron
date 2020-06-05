@@ -1421,7 +1421,8 @@ function renderAddresses(addresses) {
         let existingRow = document.getElementById(address);
         if (existingRow) {
             // update balance, txs list etc.
-        } else if (!existingRow) {
+
+        } else {
             let addrElement = getAddrRowElement(address);
             overviewWalletAddresses.append(addrElement);
 
@@ -2012,23 +2013,31 @@ function handleWalletImportSeed() {
 function handleNewAddress() {
     overviewWalletNewAddress.addEventListener('click', () => {
         console.log("handleNewAddress: New address clicked...");
-/*
-        ret = ret || false;
 
-        let payId = require('crypto').randomBytes(32).toString('hex');
-        if (ret) return payId.toUpperCase();
+        wsmanager.createAddress().then((result) => {
 
-        let dialogTpl = `<div class="transaction-panel">
-                <h4>Generated Payment ID:</h4>
-                <textarea data-cplabel="Payment ID" title="click to copy" class="ctcl default-textarea" rows="1" readonly="readonly">${payId.toUpperCase()}</textarea>
+           
+            let dialogTpl = `<div class="transaction-panel">
+            <h4>Generated new address:</h4>
+                <textarea data-cplabel="Address" title="click to copy" class="ctcl default-textarea" rows="1" readonly="readonly">${result.address}</textarea>
                 <span title="Close this dialog (esc)" class="dialog-close dialog-close-default" data-target="#ab-dialog"><i class="fas fa-window-close"></i></span>
             </div>`;
-        let dialog = document.getElementById('ab-dialog');
-        if (dialog.hasAttribute('open')) dialog.close();
-        dialog.innerHTML = dialogTpl;
-        dialog.showModal();
-         */
-
+            let dialog = document.getElementById('ab-dialog');
+            if (dialog.hasAttribute('open')) dialog.close();
+            dialog.innerHTML = dialogTpl;
+            dialog.showModal();
+            
+            wsmanager.resetAddresses().then(() => {
+                let addresses = wsession.get('loadedWalletAddresses');
+                renderAddresses(addresses);
+            }); 
+            
+        }).catch((err) => {
+            err = err.message || err;
+            let msg = `${err}`;
+            
+            formMessageSet('create-address', 'error', `${msg}`);
+        });
     });
 }
 

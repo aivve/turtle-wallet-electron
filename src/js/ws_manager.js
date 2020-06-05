@@ -532,6 +532,66 @@ WalletShellManager.prototype.genIntegratedAddress = function (paymentId, address
     });
 };
 
+WalletShellManager.prototype.resetAddresses = function () {
+    let wsm = this;
+
+    return new Promise((resolve, reject) => {
+        wsm.serviceApi.getAddresses().then((addresses) => {
+            // update session
+            wsession.set('loadedWalletAddress', addresses[0]);
+            wsession.set('loadedWalletAddresses', addresses);
+            wsm.startSyncWorker();
+
+            return resolve();
+        }).catch((err) => {
+            log.debug('Connection failed or timeout');
+            log.debug(err.message);
+            return reject(err);
+        });
+    });
+};
+
+WalletShellManager.prototype.createAddress = function (spendKey, scanHeight, reset) {
+    let wsm = this;
+
+    function resetSession() {
+        wsession.set('walletUnlockedBalance', 0);
+        wsession.set('loadedWalletAddresses', []);
+        wsession.set('walletLockedBalance', 0);
+        wsession.set('synchronized', false);
+        wsession.set('txList', []);
+        wsession.set('txLen', 0);
+        wsession.set('txLastHash', null);
+        wsession.set('txLastTimestamp', null);
+        wsession.set('txNew', []);
+        let resetdata = {
+            type: 'blockUpdated',
+            data: {
+                blockCount: syncStatus.RESET,
+                displayBlockCount: syncStatus.RESET,
+                knownBlockCount: syncStatus.RESET,
+                displayKnownBlockCount: syncStatus.RESET,
+                syncPercent: syncStatus.RESET
+            }
+        };
+        
+        wsm.notifyUpdate(resetdata);  
+    }
+
+     return new Promise((resolve, reject) => {
+        let params = { secretSpendKey: spendKey, scanHeight: scanHeight, reset: reset };
+        wsm.serviceApi.createAddress(params).then((result) => {
+            if (reset && secretSpendKey) {
+                resetSession();
+            }
+            
+            return resolve(result);
+        }).catch((err) => {
+            return reject(err);
+        });
+    });
+}
+
 WalletShellManager.prototype.createWallet = function (walletFile, password) {
     this.init();
     let wsm = this;

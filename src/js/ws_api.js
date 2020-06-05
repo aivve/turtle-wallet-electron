@@ -270,6 +270,17 @@ class WalletShellApi {
             });
         });
     }
+    createAddress(params) {
+        return new Promise((resolve, reject) => {
+            params = params || {};
+
+            this._sendRequest('createAddress', params).then((result) => {
+                return resolve(result);
+            }).catch((err) => {
+                return reject(err);
+            });
+        });
+    }
 }
 
 module.exports = WalletShellApi;
