@@ -281,6 +281,21 @@ class WalletShellApi {
             });
         });
     }
+
+    deleteAddress(params) {
+        return new Promise((resolve, reject) => {
+            params = params || {};
+            if (!params.address) {
+                return reject(new Error('Address parameter is required'));
+            }
+
+            this._sendRequest('deleteAddress', params).then((result) => {
+                return resolve(result);
+            }).catch((err) => {
+                return reject(err);
+            });
+        });
+    }
 }
 
 module.exports = WalletShellApi;

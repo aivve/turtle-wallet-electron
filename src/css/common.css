@@ -1052,7 +1052,7 @@ h4.input-required:after{
     padding: 0px 4px;
 }
 .wallet-tool:hover{
-    text-decoration: underline;
+    text-decoration: none;
     color: #fff;
 }
 .inline-tool{

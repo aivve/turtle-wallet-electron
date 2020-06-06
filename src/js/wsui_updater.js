@@ -281,9 +281,12 @@ function updateBalance(data) {
 function updateAddressBalance(data) {
     let availableBalance = document.getElementById("available_" + data.address);
     let lockedBalance = document.getElementById("locked_" + data.address);
-
-    availableBalance.innerHTML = wsutil.amountForMortal(data.available);
-    lockedBalance.innerHTML = wsutil.amountForMortal(data.locked);
+    if (typeof(availableBalance) != 'undefined' && availableBalance != null) {
+        availableBalance.innerHTML = wsutil.amountForMortal(data.available);
+    }
+    if (typeof(lockedBalance) != 'undefined' && lockedBalance != null) {
+        lockedBalance.innerHTML = wsutil.amountForMortal(data.locked);
+    }
 }
 
 function updateTransactions(result) {

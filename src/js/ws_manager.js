@@ -592,6 +592,45 @@ WalletShellManager.prototype.createAddress = function (spendKey, scanHeight, res
     });
 }
 
+WalletShellManager.prototype.deleteAddress = function (address) {
+    let wsm = this;
+
+    function resetSession() {
+        wsession.set('walletUnlockedBalance', 0);
+        wsession.set('loadedWalletAddresses', []);
+        wsession.set('walletLockedBalance', 0);
+        wsession.set('synchronized', false);
+        wsession.set('txList', []);
+        wsession.set('txLen', 0);
+        wsession.set('txLastHash', null);
+        wsession.set('txLastTimestamp', null);
+        wsession.set('txNew', []);
+        let resetdata = {
+            type: 'blockUpdated',
+            data: {
+                blockCount: syncStatus.RESET,
+                displayBlockCount: syncStatus.RESET,
+                knownBlockCount: syncStatus.RESET,
+                displayKnownBlockCount: syncStatus.RESET,
+                syncPercent: syncStatus.RESET
+            }
+        };
+        
+        wsm.notifyUpdate(resetdata);  
+    }
+
+    return new Promise((resolve, reject) => {
+        let params = { address: address };
+        wsm.serviceApi.deleteAddress(params).then(() => {
+            resetSession();
+            return resolve();
+        }).catch((err) => {
+            return reject(err);
+        });
+    });
+
+}
+
 WalletShellManager.prototype.createWallet = function (walletFile, password) {
     this.init();
     let wsm = this;

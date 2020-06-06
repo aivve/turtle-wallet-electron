@@ -53,6 +53,7 @@ let settingsButtonSave;
 let overviewWalletAddress;
 let overviewWalletAddresses;
 let overviewWalletNewAddress;
+let overviewWalletDeleteAddress;
 let overviewWalletCloseButton;
 let overviewWalletRescanButton;
 let overviewPaymentIdGen;
@@ -82,7 +83,7 @@ let walletOpenRefreshNodes;
 let overviewShowKeysButton;
 let showkeyButtonExportKey;
 let showkeyInputAddress;
-let showkeyCurrentAddress;
+let currentAddress;
 let showkeyInputViewKey;
 let showkeyInputSpendKey;
 let showkeyInputSeed;
@@ -1390,6 +1391,7 @@ function getAddrRowElement(address) {
         '  <ul class="addresses-list-entry-balance">' +
         '     <li><i class="fas fa-unlock-alt"></i> <span id="available_' + address + '">' +  wsutil.amountForMortal(available) + '</span> KRB</li>' +
         '     <li><i class="fas fa-lock"></i> <span id="locked_' + address + '">' +  wsutil.amountForMortal(locked) +'</span> KRB</li>' +
+        '     <li><a class="wallet-tool form-help align-right" style="margin: 0 20px 0 0; padding: 0;" id="delete_' + address + '"><i class="fas fa-trash-alt"></i> Delete</a></li>' +
         '     <li><a class="wallet-tool form-help align-right" style="margin: 0 20px 0 0; padding: 0;" id="export_key_' + address + '"><i class="fas fa-key"></i> Backup keys</a></li>' +
         '  </ul>' +
         '</div>';
@@ -1431,12 +1433,50 @@ function renderAddresses(addresses) {
 
             addressShowKeyButton.addEventListener('click', () => {
                 setTimeout(() => {
-                    showkeyCurrentAddress = address;
+                    currentAddress = address;
                     showkeyInputAddress.value = address;
                 }, 20);
             });
 
             addressShowKeyButton.addEventListener('click', changeSection.bind(this, "section-overview-show"), false);
+
+            // for deletion
+            let addressDeleteButton = document.getElementById("delete_" + address);
+
+            addressDeleteButton.addEventListener('click', () => {
+                currentAddress = address;                 
+                let dialogTpl = `<div class="transaction-panel">
+                        <h4>Do you really want to delete this address?</h4>
+                        <p>Make sure you have backup of it's keys or it's funds will be lost forever.</p>
+                        <textarea data-cplabel="Address" title="click to copy" class="ctcl default-textarea" rows="1" readonly="readonly">${address}</textarea>
+                        <span title="Close this dialog (esc)" class="dialog-close dialog-close-default" data-target="#ab-dialog"><i class="fas fa-window-close"></i></span>
+                        <button type="button" class="form-bt button-red dialog-close-default" data-target="#ab-dialog" id="button-delete-address">Yes, delete it</button>
+                        <button type="button" class="form-bt button-green dialog-close-default" data-target="#ab-dialog" id="button-show-back">No, get me outta here</button>
+                    </div>`;
+                let dialog = document.getElementById('ab-dialog');
+                if (dialog.hasAttribute('open')) dialog.close();
+                dialog.innerHTML = dialogTpl;
+                dialog.showModal();
+                setTimeout(() => {
+                    overviewWalletDeleteAddress = document.getElementById("button-delete-address");
+                    overviewWalletDeleteAddress.addEventListener('click', () => {
+                        wsmanager.deleteAddress(currentAddress).then(() => {
+                            setTimeout(() => {
+                                wsmanager.resetAddresses().then(() => {
+                                    let addresses = wsession.get('loadedWalletAddresses');
+                                    resetAddresses();
+                                    renderAddresses(addresses);
+                                });
+                            }, 20);
+                        }).catch((err) => {
+                            err = err.message || err;
+                            let msg = `${err}`;
+                            
+                            formMessageSet('delete-address', 'error', `${msg}`);
+                        });    
+                    });
+                }, 20);
+            });
         }
     }
 }
@@ -1625,7 +1665,7 @@ function handleWalletOpen() {
             walletOpenInputPath.value = settings.get('recentWallet');
             //overviewWalletAddress.value = wsession.get('loadedWalletAddress');
 
-            showkeyCurrentAddress = wsession.get('loadedWalletAddress');
+            currentAddress = wsession.get('loadedWalletAddress');
 
             let addresses = wsession.get('loadedWalletAddresses');
             renderAddresses(addresses);
@@ -2012,11 +2052,7 @@ function handleWalletImportSeed() {
 
 function handleNewAddress() {
     overviewWalletNewAddress.addEventListener('click', () => {
-        console.log("handleNewAddress: New address clicked...");
-
         wsmanager.createAddress().then((result) => {
-
-           
             let dialogTpl = `<div class="transaction-panel">
             <h4>Generated new address:</h4>
                 <textarea data-cplabel="Address" title="click to copy" class="ctcl default-textarea" rows="1" readonly="readonly">${result.address}</textarea>
@@ -2030,8 +2066,7 @@ function handleNewAddress() {
             wsmanager.resetAddresses().then(() => {
                 let addresses = wsession.get('loadedWalletAddresses');
                 renderAddresses(addresses);
-            }); 
-            
+            });
         }).catch((err) => {
             err = err.message || err;
             let msg = `${err}`;
@@ -2041,10 +2076,6 @@ function handleNewAddress() {
     });
 }
 
-function handleDeleteAddress() {
-
-}
-
 function handleWalletExport() {
     //overviewShowKeysButton.addEventListener('click', () => {
     //    showkeyInputAddress.value = showkeyCurrentAddress;
@@ -2052,11 +2083,11 @@ function handleWalletExport() {
 
     overviewShowKeyButton.addEventListener('click', () => {
         formMessageReset();
-        if (/*!overviewWalletAddress.value && */showkeyCurrentAddress.length === 0) return;
+        if (/*!overviewWalletAddress.value && */currentAddress.length === 0) return;
         //if (showkeyCurrentAddress.length === 0) {
         //    showkeyCurrentAddress = overviewWalletAddress.value;
         //}
-        wsmanager.getSecretKeys(showkeyCurrentAddress).then((keys) => {
+        wsmanager.getSecretKeys(currentAddress).then((keys) => {
             showkeyInputViewKey.value = keys.viewSecretKey;
             showkeyInputSpendKey.value = keys.spendSecretKey;
             if (keys.mnemonicSeed && keys.mnemonicSeed.length > 1) {
@@ -2080,12 +2111,12 @@ function handleWalletExport() {
             ]
         });
         if (filename) {
-            if (/*!overviewWalletAddress.value && */showkeyCurrentAddress.length === 0) return;
+            if (/*!overviewWalletAddress.value && */currentAddress.length === 0) return;
             //if (showkeyCurrentAddress.length === 0) {
             //    showkeyCurrentAddress = overviewWalletAddress.value;
             //}
-            wsmanager.getSecretKeys(showkeyCurrentAddress).then((keys) => {
-                let textContent = `Wallet Address:${os.EOL}${showkeyCurrentAddress}${os.EOL}`;
+            wsmanager.getSecretKeys(currentAddress).then((keys) => {
+                let textContent = `Wallet Address:${os.EOL}${currentAddress}${os.EOL}`;
                 textContent += `${os.EOL}View Secret Key:${os.EOL}${keys.viewSecretKey}${os.EOL}`;
                 textContent += `${os.EOL}Spend Secret Key:${os.EOL}${keys.spendSecretKey}${os.EOL}`;
                 if (keys.mnemonicSeed && keys.mnemonicSeed.length > 1) {
@@ -2753,8 +2784,6 @@ function initHandlers() {
         handleWalletExport();
         // new address
         handleNewAddress();
-        // delete address
-        handleDeleteAddress();
         // send transfer
         handleSendTransfer();
         // transactions
