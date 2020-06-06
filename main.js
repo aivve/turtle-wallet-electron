@@ -84,6 +84,7 @@ function createWindow() {
         autoHideMenuBar: false,
         menuBarVisibility: false,
         webPreferences: {
+            nodeIntegration: true,
             nativeWindowOpen: true,
             nodeIntegrationInWorker: true,
         },
