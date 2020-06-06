@@ -1205,6 +1205,7 @@ span.dialog-close:active{
 }
 .default-dialog p{
     line-height: 150%;
+    font-size: 0.75rem;
 }
 
 .tx-dialog{
@@ -2060,7 +2061,7 @@ kbd{
 }
 
 .about-logo p{font-size: 1rem;padding: 0;margin: 0;text-shadow: -1px -1px 1px #484848;}
-.about-logo p.small{font-size: 0.75rem;font-style:italic;line-height:40%}
+.about-logo p.small{font-size: 0.75rem;font-style:italic;}
 
 .about-logo img{
     width: 140px;
