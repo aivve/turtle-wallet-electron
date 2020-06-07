@@ -2960,6 +2960,15 @@ function initKeyBindings() {
         }
         return changeSection('section-overview-create');
     });
+    // create new address: ctrl+shift+n
+    Mousetrap.bind(['ctrl+shift+n', 'command+shift+n'], () => {
+        walletOpened = wsession.get('serviceReady') || false;
+        if (!walletOpened) {
+            wsutil.showToast('Please open your wallet before creating new address');
+            return;
+        }
+        overviewWalletNewAddress.dispatchEvent(new Event('click'));
+    });
     // import from keys: ctrl+i
     Mousetrap.bind(['ctrl+i', 'command+i'], () => {
         walletOpened = wsession.get('serviceReady') || false;
