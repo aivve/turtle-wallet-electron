@@ -1444,7 +1444,7 @@ function renderAddresses(addresses) {
             let addressDeleteButton = document.getElementById("delete_" + address);
 
             addressDeleteButton.addEventListener('click', () => {
-                currentAddress = address;                 
+                currentAddress = address;
                 let dialogTpl = `<div class="transaction-panel">
                         <h4>Do you really want to delete this address?</h4>
                         <p>Make sure you have backup of it's keys or it's funds will be lost forever.</p>
@@ -1471,9 +1471,9 @@ function renderAddresses(addresses) {
                         }).catch((err) => {
                             err = err.message || err;
                             let msg = `${err}`;
-                            
+
                             formMessageSet('delete-address', 'error', `${msg}`);
-                        });    
+                        });
                     });
                 }, 20);
             });
@@ -2062,7 +2062,7 @@ function handleNewAddress() {
             if (dialog.hasAttribute('open')) dialog.close();
             dialog.innerHTML = dialogTpl;
             dialog.showModal();
-            
+
             wsmanager.resetAddresses().then(() => {
                 let addresses = wsession.get('loadedWalletAddresses');
                 renderAddresses(addresses);
@@ -2070,7 +2070,7 @@ function handleNewAddress() {
         }).catch((err) => {
             err = err.message || err;
             let msg = `${err}`;
-            
+
             formMessageSet('create-address', 'error', `${msg}`);
         });
     });
@@ -2234,9 +2234,16 @@ function handleSendTransfer() {
             return;
         }
 
+        // change address is required in multi-address wallet
+        // todo: consider adding selection of change address (dropdown?)
+        let ownAddress = wsession.get('loadedWalletAddress');
+
+        // todo: add anonymity selection
+
         // todo: adjust decimal
         let tx = {
             address: recipientAddress,
+            changeAddress: ownAddress,
             amount: txAmount,
             fee: txFee
         };
