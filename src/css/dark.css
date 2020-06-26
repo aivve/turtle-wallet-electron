@@ -82,7 +82,7 @@ html.dark::after{
 
 .dark .button-red,
 .dark .button-gray{
-background: #3e3e3e;
+background: #959595;
 border: 0 none; /*2px solid #cccccc59;*/
 }
 
