@@ -2502,7 +2502,8 @@ function handleTransactions() {
             return;
         }
 
-        let txs = wsession.get('txNew');
+        //let txs = wsession.get('txNew');
+        let txs = wsession.get('txList');
         if (!txs.length) {
             //if(window.TXGRID === null ) setTxFiller(true);
             return;

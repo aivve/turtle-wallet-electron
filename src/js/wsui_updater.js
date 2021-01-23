@@ -302,31 +302,32 @@ function updateTransactions(result) {
 
     let txListNew = [];
 
-    if (txlistExisting > 1000) {
+    let txLimit = 50000;
+
+    /*if (txlistExisting.length > txLimit) {
         console.log(`-> updateTransactions: too many txs, stop loading them to prevent webcontent crash`);
         txlistExisting = [];
-    }
+    }*/
 
-    //Array.from(blockItems).forEach((block) => {
-    Array.from(blockItems).some((block) => {
+    Array.from(blockItems).forEach((block) => {
         block.transactions.map((tx) => {
             if (tx.amount !== 0 && !wsutil.objInArray(txlistExisting, tx, 'transactionHash')) {
+                tx.rawAmount = parseInt(tx.amount, 10);
+                tx.rawFee = tx.fee;
                 tx.amount = wsutil.amountForMortal(tx.amount);
                 tx.timeStr = new Date(tx.timestamp * 1000).toUTCString();
                 tx.fee = wsutil.amountForMortal(tx.fee);
                 tx.paymentId = tx.paymentId.length ? tx.paymentId : '-';
                 tx.txType = (tx.amount > 0 ? 'in' : 'out');
-                tx.rawAmount = parseInt(tx.amount, 10);
-                tx.rawFee = tx.fee;
                 tx.rawPaymentId = tx.paymentId;
                 tx.rawHash = tx.transactionHash;
                 txListNew.unshift(tx);
             }
-            if (txListNew.length > 1000) {
+
+            /*if (txListNew.length > txLimit) {
                 console.log(`-> updateTransactions: too many txs, stop loading them to prevent webcontent crash`);
-                //return true;
                 txListNew.pop();
-            }
+            }*/
         });
     });
 
@@ -342,7 +343,7 @@ function updateTransactions(result) {
     let txList = txListNew.concat(txlistExisting);
     wsession.set('txList', txList);
     wsession.set('txLen', txList.length);
-    wsession.set('txNew', txListNew);
+    //wsession.set('txNew', txListNew);
 
     let currentDate = new Date();
     currentDate = `${currentDate.getUTCFullYear()}-${currentDate.getUTCMonth() + 1}-${currentDate.getUTCDate()}`;
