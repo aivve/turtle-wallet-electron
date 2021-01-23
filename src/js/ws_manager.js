@@ -240,8 +240,9 @@ WalletShellManager.prototype._spawnService = function (walletFile, password, onE
         '--daemon-address', this.daemonHost,
         '--daemon-port', this.daemonPort,
         '--log-level', SERVICE_LOG_LEVEL,
-        '--log-file', logFile/*,
-        '--init-timeout', timeout*/
+        '--log-file', logFile,
+        //'--local',
+        //'--init-timeout', timeout
     ]);
 
 
@@ -574,8 +575,8 @@ WalletShellManager.prototype.createAddress = function (spendKey, scanHeight, res
                 syncPercent: syncStatus.RESET
             }
         };
-        
-        wsm.notifyUpdate(resetdata);  
+
+        wsm.notifyUpdate(resetdata);
     }
 
      return new Promise((resolve, reject) => {
@@ -584,7 +585,7 @@ WalletShellManager.prototype.createAddress = function (spendKey, scanHeight, res
             if (reset && secretSpendKey) {
                 resetSession();
             }
-            
+
             return resolve(result);
         }).catch((err) => {
             return reject(err);
@@ -615,8 +616,8 @@ WalletShellManager.prototype.deleteAddress = function (address) {
                 syncPercent: syncStatus.RESET
             }
         };
-        
-        wsm.notifyUpdate(resetdata);  
+
+        wsm.notifyUpdate(resetdata);
     }
 
     return new Promise((resolve, reject) => {

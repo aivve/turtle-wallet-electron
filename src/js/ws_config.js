@@ -3,11 +3,11 @@ var config = {};
 // self explanatory, your application name, descriptions, etc
 config.appName = 'WalletdShell';
 config.appDescription = 'Karbo GUI for walletd';
-config.appSlogan = 'Slow and steady wins the race!';
+config.appSlogan = 'Make Karbovanets great again!';
 config.appId = 'org.karbo.walletdshell';
 config.appGitRepo = 'https://github.com/aivve/walletd-electron-gui';
 
-// default port number for your daemon (e.g. TurtleCoind)
+// default port number for your daemon (e.g. karbowanecd)
 config.daemonDefaultRpcPort = 32348;
 
 // wallet file created by this app will have this extension
@@ -28,14 +28,13 @@ config.walletServiceConfigFormat = "ini";
 config.walletServiceRpcPort = 8070;
 
 // block explorer url, the [[TX_HASH]] will be substituted w/ actual transaction hash
-config.blockExplorerUrl = 'http://explorer.karbowanec.com/?hash=[[TX_HASH]]#transaction';
+config.blockExplorerUrl = 'http://explorer.karbo.org/?hash=[[TX_HASH]]#transaction';
 
 // default remote node to connect to, set this to a known reliable node for 'just works' user experience
-config.remoteNodeDefaultHost = '127.0.0.1:32348';
-
+config.remoteNodeDefaultHost = '51.15.201.166:32348';
 
 // remote node list update url, set to null if you don't have one
-// for TRTL:
+// for KRB:
 // raw list: https://raw.githubusercontent.com/turtlecoin/turtlecoin-nodes-json/master/turtlecoin-nodes.json
 // filtered: https://trtl.nodes.pub/api/getNodes
 config.remoteNodeListUpdateUrl = null;
@@ -45,8 +44,7 @@ config.remoteNodeListFiltered = false;
 
 // fallback remote node list, in case fetching update failed, fill this with known to works remote nodes
 config.remoteNodeListFallback = [
-  //'51.15.252.228:32348'
-  '127.0.0.1:32348'
+  '51.15.201.166:32348'
 ];
 
 config.remoteNodeCacheSupported = false;
@@ -82,7 +80,7 @@ config.addressBookObfuscationKey = '79009fb00ca1b7130832a42de45142cf6c4b7f333fe6
 // initial/sample entries to fill new address book
 config.addressBookSampleEntries = [
   {
-    name: 'WalletShell Donation',
+    name: 'Karbo Donation',
     address: 'Kdev1L9V5ow3cdKNqDpLcFFxZCqu5W2GE9xMKewsB2pUXWxcXvJaUWHcSrHuZw91eYfQFzRtGfTemReSSMN4kE445i6Etb3',
     paymentId: '',
   }

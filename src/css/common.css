@@ -112,6 +112,10 @@ body {
     padding:12px 0 0 12px;
 }
 
+#navbar-text-sync {
+    font-size: x-small;
+}
+
 .navbar-div-balance {
     padding:12px 5px 5px 12px;
     font-weight: 300;
@@ -1381,7 +1385,7 @@ input.path-input-button{
 }
 
 
-.borokokok{
+.toster{
     position:absolute;
     bottom: 1px;
     left: 2;
@@ -1398,7 +1402,7 @@ input.path-input-button{
     z-index:9999
 }
 
-.borokokok.off{
+.toster.off{
     transform: translateX(-1800px);
 }
 

@@ -65,7 +65,7 @@ exports.innerHTML = (parentEl, html) => {
 
 exports.showToast = (msg, duration, elId) => {
     duration = duration || 3500;
-    elId = elId || 'belekok';    
+    elId = elId || 'toaster';
     let blekok = document.getElementById(elId);
 
     if (!msg.length) {
