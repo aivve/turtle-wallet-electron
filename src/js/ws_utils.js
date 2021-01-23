@@ -209,8 +209,9 @@ exports.validateMnemonic = (seed) => {
 
 exports.amountForMortal = (amount) => {
     if (!config.decimalDivisor) return amount;
-    let decimalPlaces = config.decimalPlaces || 2;
-    return (amount / config.decimalDivisor).toFixed(decimalPlaces);
+    let decimalPlaces = config.decimalPlaces || 12;
+    let n = (amount / config.decimalDivisor).toFixed(decimalPlaces);
+    return parseFloat(n); // remove trailing zeros
 };
 
 exports.amountForImmortal = (amount) => {

@@ -240,14 +240,13 @@ function updateBalance(data) {
         if (availableBalance < 0) return;
     }
 
-
-    while(bUnlocked.charAt(bUnlocked.length-1) == "0" && bUnlocked.charAt(bUnlocked.length-3) != ".") {
+    /*while(bUnlocked.charAt(bUnlocked.length-1) == "0" && bUnlocked.charAt(bUnlocked.length-3) != ".") {
         bUnlocked = bUnlocked.slice(0, -1)
     }
 
     while(bLocked.charAt(bLocked.length-1) == "0"&& bLocked.charAt(bLocked.length-3 ) != ".") {
         bLocked = bLocked.slice(0, -1)
-    }
+    }*/
 
     balanceAvailableField.innerHTML = bUnlocked;
     balanceLockedField.innerHTML = bLocked;
